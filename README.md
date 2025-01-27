@@ -30,3 +30,14 @@ and below listed the credentials for them:
 <b>Each user has six faked tasks to work with so you can test its functionality</b>
 While your project is running, you can use [API documentation](http://localhost/docs)
 so it will be easier to check everything ;)
+
+### Specification ###
+
+You have functionality to register a new account, providing name, unique email, strong password and its confirmation,
+login into existing account and logout of the current logged account.
+<br>
+For tasks, you can receive a list of user tasks, also you can use filter to receive only completed or pending tasks.
+Also, you can use search to look for a specific task using <i>name or description</i>.
+<br>
+Of course, you can add new tasks, edit them, receive information about a specific task using its ID, or delete it.
+For each of these actions, the system checks whether your account has <b>permission to access</b> with the data.
