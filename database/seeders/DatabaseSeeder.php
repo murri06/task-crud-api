@@ -16,12 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        User::factory()->has(Task::factory()->count(5))->create([
+        User::factory()->has(Task::factory()->count(6))->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => Hash::make('secret'),
+        ]);
+
+        User::factory()->has(Task::factory()->count(6))->create([
+            'name' => 'John Doe',
+            'email' => 'johndoe@example.com',
+            'password' => Hash::make('superSecret'),
         ]);
     }
 }

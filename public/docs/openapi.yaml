@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: 'Tasks API'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/register:
+    post:
+      summary: Register
+      operationId: register
+      description: "Used to register new user by provided name,\nunique email, password and its confirmation"
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: kfsewmvratragcuoa
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: katelynn27@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must match the regex /[a-z]/. Must match the regex /[A-Z]/. Must match the regex /[0-9]/. Must match the regex /[@$!%*#?&]/. Must be at least 8 characters. Must not be greater than 32 characters.'
+                  example: 'U5z}=AI+a!TZE&D&Wf#'
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/login:
+    post:
+      summary: Login
+      operationId: login
+      description: 'Used to log in user and receive its access token'
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: hobart.will@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: 'J6HP~pW^*^J0vB9EHO('
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/logout:
+    post:
+      summary: Logout
+      operationId: logout
+      description: 'Endpoint to close current session and delete access token'
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+  /api/tasks:
+    get:
+      summary: Index
+      operationId: index
+      description: "Display a listing of the tasks for logged-in user.\nYou can use status as filter and set different sorting"
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Task
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: ''
+                  example: pending
+                  nullable: true
+                  enum:
+                    - complete
+                    - pending
+                search:
+                  type: string
+                  description: ''
+                  example: sunt
+                  nullable: true
+                sort:
+                  type: string
+                  description: ''
+                  example: created_at
+                  nullable: true
+                  enum:
+                    - id
+                    - created_at
+                    - updated_at
+                    - status
+                per_page:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 21
+                  nullable: true
+                page:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 32
+                  nullable: true
+    post:
+      summary: Creation
+      operationId: creation
+      description: "Store a newly created task in storage.\nYou can specify its status or leave it blank for default one."
+      parameters: []
+      responses: {  }
+      tags:
+        - Task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: qdxplxcktztkbobmemgmpjkuw
+                  nullable: false
+                description:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'Architecto unde odio et necessitatibus consectetur totam.'
+                  nullable: false
+                status:
+                  type: string
+                  description: ''
+                  example: completed
+                  nullable: true
+                  enum:
+                    - completed
+                    - pending
+              required:
+                - name
+                - description
+  '/api/tasks/{id}':
+    get:
+      summary: 'Single Receive'
+      operationId: singleReceive
+      description: 'You can receive a specific task'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Task
+    put:
+      summary: Update
+      operationId: update
+      description: "Update the specified task in storage.\nYou can update task status, name or description."
+      parameters: []
+      responses: {  }
+      tags:
+        - Task
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: dv
+                  nullable: true
+                description:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'Et mollitia repudiandae expedita consectetur.'
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: pending
+                  nullable: true
+                  enum:
+                    - completed
+                    - pending
+    delete:
+      summary: Deletion
+      operationId: deletion
+      description: 'Remove the specified task from storage.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Task
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the task.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Authentication
+    description: ''
+  -
+    name: Task
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by receiving it <b>in response</b> to login or register.'
+security:
+  -
+    default: []

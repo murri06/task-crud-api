@@ -13,11 +13,25 @@ class TaskController extends Controller
     use AuthorizesRequests;
 
     /**
-     * Display a listing of the resource.
+     * Index
+     *
+     * Display a listing of the tasks for logged-in user.
+     * You can use status as filter and set different sorting
+     *
+     * @authenticated
+     * @group Task
      */
     public function index(Request $request)
     {
         $query = Task::query()->where('user_id', auth()->id());
+
+        $request->validate([
+            'status' => 'nullable|string|in:complete,pending',
+            'search' => 'nullable|string',
+            'sort' => 'nullable|string|in:id,created_at,updated_at,status',
+            'per_page' => 'nullable|integer|min:1|max:100',
+            'page' => 'nullable|integer|min:1',
+        ]);
 
         // Filter by status
         if ($request->has('status')) {
@@ -44,7 +58,13 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Creation
+     *
+     * Store a newly created task in storage.
+     * You can specify its status or leave it blank for default one.
+     *
+     * @authenticated
+     * @group Task
      */
     public function store(StoreTaskRequest $request)
     {
@@ -57,6 +77,15 @@ class TaskController extends Controller
         return response()->json($task, 201);
     }
 
+
+    /**
+     * Single Receive
+     *
+     * You can receive a specific task
+     *
+     * @authenticated
+     * @group Task
+     */
     public function show(Task $task)
     {
         $this->authorize('view', $task);
@@ -64,7 +93,13 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update
+     *
+     * Update the specified task in storage.
+     * You can update task status, name or description.
+     *
+     * @authenticated
+     * @group Task
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
@@ -77,7 +112,12 @@ class TaskController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deletion
+     *
+     * Remove the specified task from storage.
+     *
+     * @authenticated
+     * @group Task
      */
     public function destroy(Task $task)
     {

@@ -3,12 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+
+
+    /**
+     * Register
+     *
+     * Used to register new user by provided name,
+     * unique email, password and its confirmation
+     *
+     * @group Authentication
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -39,6 +53,18 @@ class AuthController extends Controller
         ], 201);
     }
 
+
+    /**
+     * Login
+     *
+     * Used to log in user and receive its access token
+     *
+     * @group Authentication
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -62,6 +88,17 @@ class AuthController extends Controller
         ]);
     }
 
+
+    /**
+     * Logout
+     *
+     * Endpoint to close current session and delete access token
+     *
+     * @group Authentication
+     * @authenticated
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
