@@ -5,7 +5,11 @@
 ## Deployment ##
 
 for local deployment, you need to install Docker,
-clone repo, unzip it into a folder, use terminal to start sail with command
+clone repo, unzip it into a folder, use terminal to
+install needed packages using 
+<br>
+`composer install`<br>
+After that start sail with command
 <br>`./vendor/bin/sail up`
 
 After it was deployed, you can use command <br>
